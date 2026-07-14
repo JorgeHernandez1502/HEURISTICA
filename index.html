@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heurística - Energía que impulsa el cambio sostenible</title>
+    <style>
+        /* --- VARIABLES DE COLOR Y ESTILOS BASE --- */
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1B676B; 
+            --text-light: #f8fafc;
+            --text-muted: #e2e8f0; 
+            --accent-green: #BEF202; 
+            --accent-green-hover: #a1ce02; 
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+            --bg-light-independent: #EAFDE6;
+            --header-independent: #1B676B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* --- PANTALLA DE CARGA (LOADER) --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* Fondo completamente blanco */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        /* Contenedor del Loader con conectores y rayo */
+        .loader-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* El rayo verde en el centro */
+        .rayo-verde {
+            width: 50px;
+            height: 50px;
+            fill: var(--accent-green);
+            filter: drop-shadow(0 0 8px rgba(190, 242, 2, 0.8));
+            animation: pulse-rayo 1.5s infinite ease-in-out;
+            z-index: 2;
+        }
+
+        /* Los conectores que orbitan y "cargan" el rayo */
+        .conector {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background-color: #1B676B; /* Color de los conectores */
+            border-radius: 3px;
+            z-index: 1;
+        }
+
+        /* Simulamos los cabezales metálicos de los conectores */
+        .conector::after {
+            content: '';
+            position: absolute;
+            background-color: var(--accent-green);
+            width: 4px;
+            height: 6px;
+            top: -5px;
+            left: 5px;
+            border-radius: 1px;
+            box-shadow: 0 0 4px var(--accent-green);
+        }
+
+        /* Posicionamiento y rotación individual de los conectores apuntando al centro */
+        .conector:nth-child(1) {
+            top: 10px;
+            left: 68px;
+            transform: rotate(0deg);
+            animation: orbita-carga-1 2s infinite linear;
+        }
+        .conector:nth-child(2) {
+            bottom: 10px;
+            left: 68px;
+            transform: rotate(180deg);
+            animation: orbita-carga-2 2s infinite linear;
+        }
+        .conector:nth-child(3) {
+            top: 68px;
+            left: 10px;
+            transform: rotate(-90deg);
+            animation: orbita-carga-3 2s infinite linear;
+        }
+        .conector:nth-child(4) {
+            top: 68px;
+            right: 10px;
+            transform: rotate(90deg);
+            animation: orbita-carga-4 2s infinite linear;
+        }
+
+        /* Animación del Rayo Central */
+        @keyframes pulse-rayo {
+            0%, 100% {
+                transform: scale(0.9);
+                filter: drop-shadow(0 0 4px rgba(190, 242, 2, 0.5));
+            }
+            50% {
+                transform: scale(1.15);
+                filter: drop-shadow(0 0 15px rgba(190, 242, 2, 1));
+            }
+        }
+
+        /* Animación de los conectores "inyectando" energía al centro */
+        @keyframes orbita-carga-1 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(12px) rotate(0deg); }
+        }
+        @keyframes orbita-carga-2 {
+            0%, 100% { transform: translateY(0) rotate(180deg); }
+            50% { transform: translateY(-12px) rotate(180deg); }
+        }
+        @keyframes orbita-carga-3 {
+            0%, 100% { transform: translateX(0) rotate(-90deg); }
+            50% { transform: translateX(12px) rotate(-90deg); }
+        }
+        @keyframes orbita-carga-4 {
+            0%, 100% { transform: translateX(0) rotate(90deg); }
+            50% { transform: translateX(-12px) rotate(90deg); }
+        }
+
+        /* Texto sutil debajo del cargador */
+        .loader-text {
+            margin-top: 25px;
+            color: #1f2937;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fade-text 1.5s infinite ease-in-out;
+        }
+
+        @keyframes fade-text {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* --- CLASE DINÁMICA PARA PESTAÑAS INDEPENDIENTES (TEMA CLARO) --- */
+        body.light-theme {
+            background-color: var(--bg-light-independent);
+            color: #0f172a; 
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- MENÚ DE NAVEGACIÓN --- */
+        header {
+            background-color: transparent; 
+            position: absolute; 
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            border-bottom: none; 
+            transition: background-color 0.3s ease;
+        }
+
+        body.light-theme header {
+            background-color: var(--header-independent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+            transition: height 0.3s ease;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- LOGOTIPO --- */
+        #headerLogo {
+            height: 70px; 
+            margin-right: 40px; 
+            opacity: 1; 
+            transition: opacity 0.3s ease;
+        }
+
+        /* --- BOTÓN HAMBURGUESA --- */
+        .menu-desplegable {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 25px;
+            height: 18px;
+            z-index: 1100;
+        }
+
+        .menu-desplegable span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: var(--text-light);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        body.light-theme .menu-desplegable span {
+            background-color: var(--text-light);
+        }
+
+        .menu-desplegable.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .menu-desplegable.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-desplegable.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* MENÚ LATERAL DESPLEGABLE (SIDEBAR) */
+        .sidebar-menu {
+            position: fixed; 
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 110px 30px 40px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: left 0.3s ease;
+            z-index: 1050;
+        }
+
+        .sidebar-menu.open {
+            left: 0;
+        }
+
+        .sidebar-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.15rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-btn:hover {
+            color: var(--accent-green);
+            padding-left: 8px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: gap 0.3s ease;
+            position: relative;
+        }
+
+        /* --- BOTÓN DE USUARIO --- */
+        .user-menu-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-user {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-user:hover {
+            border-color: var(--accent-green);
+            background-color: rgba(190, 242, 2, 0.1);
+        }
+
+        .btn-user svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: fill 0.3s ease;
+        }
+
+        .btn-user:hover svg {
+            fill: var(--accent-green);
+        }
+
+        .btn-user.logged-in-avatar {
+            background-color: var(--accent-green);
+            color: #0f172a;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-color: var(--accent-green);
+        }
+
+        /* --- DROPDOWN EXCLUSIVO DE SESIÓN --- */
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 55px;
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            width: 170px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            overflow: hidden;
+            animation: fadeInDropdown 0.2s ease-out;
+        }
+
+        @keyframes fadeInDropdown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-dropdown button {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-dropdown button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--accent-green);
+        }
+
+        .user-dropdown button:first-child {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .user-dropdown {
+            background-color: var(--header-independent);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-cta {
+            background-color: var(--accent-green);
+            color: #0f172a; 
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .btn-cta:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        /* --- CONTROL DE VISTAS --- */
+        .view-content {
+            display: block;
+        }
+
+        .view-content.hidden {
+            display: none !important;
+        }
+
+        .independent-view {
+            padding-top: 140px;
+            padding-bottom: 100px;
+            flex: 1;
+        }
+
+        body.light-theme .section-title {
+            color: #0f172a;
+        }
+        body.light-theme .section-title span {
+            color: #1B676B;
+        }
+
+        /* --- INICIO (HOME) --- */
+        .hero {
+            padding-top: 180px;
+            padding-bottom: 120px;
+            text-align: center;
+            background: url('logo.jpeg') no-repeat center center/cover; 
+            min-height: 95vh;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .hero-content-wrapper {
+            background-color: rgba(15, 23, 42, 0.35); /* Transparencia ultra limpia al 35% */
+            padding: 35px 40px;
+            border-radius: 12px;
+            margin: 0 auto;
+            max-width: 800px;
+            backdrop-filter: blur(3px); /* Desenfoque ligeramente mayor para que el texto flote sobre el fondo */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde un poco más brillante para definir el contorno */
+            display: flex;
+            flex-direction: column;
+            gap: 15px; 
+        } 
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            line-height: 1.15; 
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); 
+            color: var(--text-light);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            line-height: 1.4; 
+            color: #e2e8f0; 
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* --- BARRA DE BÚSQUEDA --- */
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 10px auto;
+            position: relative;
+        }
+
+        .search-box {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent-green);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 10px rgba(190, 242, 2, 0.2);
+        }
+
+        .search-input {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-btn {
+            background-color: var(--accent-green);
+            border: none;
+            color: #0f172a;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        .search-error-msg {
+            color: #f87171;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            font-weight: 500;
+            display: none;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .stats {
+            background-color: var(--bg-card);
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--accent-green);
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .stat-item p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            color: var(--text-light);
+        }
+
+        .section-title span {
+            color: var(--accent-green);
+        }
+
+        .faas-grid, .identity-grid, .valores-grid, .general-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .valores-grid {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-light);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card.highlighted-service {
+            border: 2px solid var(--accent-green) !important;
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(190, 242, 2, 0.3);
+        }
+
+        .card h3, .card h4 {
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        body.light-theme .card {
+            box-shadow: 0 4px 15px rgba(27, 103, 107, 0.15);
+        }
+
+        /* --- IDENTIDAD --- */
+        .quienes-somos-box {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 850px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .quienes-somos-box p {
+            font-size: 1.1rem;
+            color: #f8fafc;
+            margin-bottom: 15px;
+        }
+
+        .bg-alternativo {
+            background-color: rgba(27, 103, 107, 0.15); 
+            border-top: 1px solid rgba(27, 103, 107, 0.3);
+            border-bottom: 1px solid rgba(27, 103, 107, 0.3);
+        }
+
+        /* --- NUEVO FORMULARIO DE DIAGNÓSTICO (VISTA INDEPENDIENTE) --- */
+        .form-diagnostico-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .form-diagnostico-container {
+            background-color: var(--header-independent);
+            box-shadow: 0 8px 24px rgba(27, 103, 107, 0.2);
+        }
+
+        .form-group-diagnostico {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group-diagnostico label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .form-group-diagnostico input, 
+        .form-group-diagnostico select, 
+        .form-group-diagnostico textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group-diagnostico input:focus, 
+        .form-group-diagnostico select:focus, 
+        .form-group-diagnostico textarea:focus {
+            border-color: var(--accent-green);
+        }
+
+        /* --- CONTACTO SIMPLIFICADO --- */
+        .contact-simplified-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-item-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.light-theme .contact-item-card {
+            background-color: var(--header-independent);
+            box-shadow: 0 4px 15px rgba(27, 103, 107, 0.15);
+        }
+
+        .contact-icon-wrapper {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-icon-wrapper svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--accent-green);
+        }
+
+        .contact-item-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .contact-item-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            max-width: 220px;
+        }
+
+        .contact-link-btn {
+            background-color: var(--accent-green);
+            color: #0f172a;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s;
+            display: inline-block;
+        }
+
+        .contact-link-btn:hover {
+            background-color: var(--accent-green-hover);
+            transform: translateY(-2px);
+        }
+
+        /* --- PESTAÑA PERFIL --- */
+        .profile-view {
+            padding-top: 160px;
+            padding-bottom: 100px;
+            flex: 1;
+        }
+
+        .profile-container {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 40px;
+            margin-top: 20px;
+            color: var(--text-light);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            background-color: var(--accent-green);
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .profile-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            color: var(--text-muted);
+        }
+
+        .profile-data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .data-card {
+            background-color: var(--bg-dark);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-card span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .data-card p {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* ESTILOS DE REDES SOCIALES */
+        .social-link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 40px !important;
+        }
+        .social-link-card h3 {
+            color: var(--accent-green);
+            font-size: 1.5rem;
+        }
+        body.light-theme .social-link-card h3 {
+            color: var(--accent-green);
+        }
+        .btn-social {
+            margin-top: 15px;
+            display: inline-block;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: 0.3s;
+        }
+        .btn-social:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* --- RESTAURACIÓN DE ESTILOS DEL MODAL (INICIO/REGISTRO) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background-color: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(255,255,255,0.15);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-box .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-box .close-btn:hover {
+            color: var(--accent-green);
+        }
+
+        .modal-tabs {
+            display: flex;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            opacity: 0.7;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-green);
+            opacity: 1;
+            border-bottom: 2.5px solid var(--accent-green);
+            margin-bottom: -2px;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-green);
+        }
+
+        .btn-submit {
+            background-color: var(--accent-green);
+            color: #0f172a;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        footer {
+            background-color: #020617;
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #334155;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header .container {
+                height: 70px; 
+                padding: 0 12px;
+            }
+
+            .nav-buttons {
+                gap: 8px; 
+            }
+
+            .btn-cta {
+                font-size: 0.85rem;
+                padding: 6px 12px; 
+            }
+
+            .hero {
+                background: url('1783973094729.jpg') no-repeat center center/cover;
+                padding-top: 130px;
+                padding-bottom: 70px;
+                min-height: 85vh;
+            }
+
+            .hero-content-wrapper {
+                padding: 24px 20px;
+                margin: 0 10px;
+                width: calc(100% - 20px);
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER CON PINES DE CONEXIÓN Y RAYO VERDE (FONDO BLANCO) -->
+    <div id="preloader">
+        <div class="loader-container">
+            <!-- Rayo central verde -->
+            <svg class="rayo-verde" viewBox="0 0 24 24">
+                <path d="M11 21h-1l1.5-7h-5.5l8-12h1l-1.5 7h5.5z"/>
+            </svg>
+            <!-- 4 Conectores cargando el centro -->
+            <div class="conector"></div>
+            <div class="conector"></div>
+            <div class="conector"></div>
+            <div class="conector"></div>
+        </div>
+        <div class="loader-text">Cargando Energía</div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="nav-left">
+                <button class="menu-desplegable" id="hamburgerBtn" aria-label="Menú" onclick="toggleSidebar()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <img src="1783973094802.png" alt="Heurística Logo" id="headerLogo">
+
+                <nav class="sidebar-menu" id="sidebarMenu">
+                    <button class="sidebar-btn" onclick="navigateTo('home')">Inicio</button>
+                    <button class="sidebar-btn" onclick="navigateTo('servicios')">Servicios</button>
+                    <button class="sidebar-btn" onclick="navigateTo('novedades')">Novedades</button>
+                    <button class="sidebar-btn" onclick="navigateTo('eventos')">Eventos</button>
+                    <button class="sidebar-btn" onclick="navigateTo('redes')">Redes</button>
+                    <button class="sidebar-btn" onclick="navigateTo('diagnosticoView')">Diagnóstico</button>
+                    <button class="sidebar-btn" onclick="navigateTo('contactoView')">Contacto</button>
+                </nav>
+            </div>
+            
+            <div class="nav-buttons">
+                <div class="user-menu-container">
+                    <button class="btn-user" id="userMenuBtn" onclick="handleUserBtnClick()" aria-label="Menú de usuario">
+                        <svg viewBox="0 0 24 24" id="userIcon">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="user-dropdown" id="userDropdown">
+                        <button onclick="navigateTo('profile'); closeDropdown();">Mi Perfil</button>
+                        <button onclick="logout(); closeDropdown();">Cerrar Sesión</button>
+                    </div>
+                </div>
+
+                <a href="#" id="ctaNavBtn" class="btn-cta" onclick="event.preventDefault(); navigateTo('diagnosticoView')">Agendar Prueba</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- INTERFAZ MODAL -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="toggleModal(false)">&times;</button>
+            
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Iniciar Sesión</button>
+                <button class="tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Registrarse</button>
+            </div>
+
+            <!-- Formulario Login -->
+            <form id="formLogin" class="auth-form active" onsubmit="handleAuth(event, 'login')">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Contraseña" required>
+                </div>
+                <button type="submit" class="btn-submit">Ingresar</button>
+            </form>
+
+            <!-- Formulario Registro -->
+            <form id="formRegister" class="auth-form" onsubmit="handleAuth(event, 'register')">
+                <div class="form-group">
+                    <input type="text" id="regName" placeholder="Nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="regEmail" placeholder="Correo electrónico" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Crear contraseña" required>
+                </div>
+                <button type="submit" class="btn-submit">Crear Cuenta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 1: INICIO (HOME) -->
+    <div id="homeView" class="view-content">
+        <section class="hero">
+            <div class="hero-content-wrapper">
+                <h1>Transformamos tu flota actual en un sistema eléctrico rentable.</h1>
+                <p>Sin inversión inicial. Reducimos tus costos operativos y eliminamos tus emisiones con nuestro modelo FaaS a 5 años.</p>
+                
+                <div class="search-container">
+                    <form onsubmit="handleServiceSearch(event)" class="search-box">
+                        <input type="text" id="serviceSearchInput" class="search-input" placeholder="Buscar servicios (ej. Retrofitting, Telemetría...)" required autocomplete="off">
+                        <button type="submit" class="search-btn">Buscar</button>
+                    </form>
+                    <div id="searchError" class="search-error-msg">No existe ese tipo de búsqueda[cite: 1]</div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <a href="#" class="btn-cta" onclick="event.preventDefault(); navigateTo('diagnosticoView')" style="padding: 12px 28px; font-size: 1rem;">Solicitar Diagnóstico Gratis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BARRA DE LOGROS -->
+        <div class="stats">
+            <div class="container stats-grid">
+                <div class="stat-item">
+                    <h3>+125</h3>
+                    <p>Años de experiencia combinada</p>
+                </div>
+                <div class="stat-item">
+                    <h3>365</h3>
+                    <p>Unidades en contratos de prueba</p>
+                </div>
+                <div class="stat-item">
+                    <h3>$2.26M</h3>
+                    <p>De ahorro estimado por unidad en 5 años</p>
+                </div>
+                <div class="stat-item">
+                    <h3>+701K</h3>
+                    <p>Unidades convertibles en México</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODELO FAAS -->
+        <section id="modelo">
+            <div class="container">
+                <h2 class="section-title">Modelo FaaS: <span>Flota como Servicio</span></h2>
+                <div class="faas-grid">
+                    <div class="card">
+                        <h3>Cero Inversión Inicial</h3>
+                        <p>Esquema 100% OPEX. Migra a la electromovilidad sin descapitalizar tu empresa utilizando recursos de tu propio ahorro operativo.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Conversión Integral</h3>
+                        <p>Transformamos tus unidades diésel/gasolina vigentes gracias a nuestra alianza estratégica de motores y software de última generación.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Telemetría Avanzada</h3>
+                        <p>Monitoreo analítico en tiempo real del rendimiento de tus baterías, consumo energético y métricas de operación de tus rutas.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Mantenimiento y Soporte</h3>
+                        <p>Contrato flexible a 5 años que cubre todas las refacciones, soporte técnico especializado y rendimiento garantizado por escrito.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIÉNES SOMOS -->
+        <section id="quienes-somos" class="bg-alternativo">
+            <div class="container">
+                <h2 class="section-title">¿Quiénes <span>Somos</span>?</h2>
+                <div class="quienes-somos-box">
+                    <p>En <strong>Heurística</strong>, somos un equipo integrado por ingenieros, analistas y expertos en energía apasionados por acelerar la transición hacia el transporte sustentable en México.</p>
+                    <p>Rompemos las barreras económicas tradicionales de la electromovilidad mediante ingeniería financiera y tecnológica innovadora, permitiendo que empresas de cualquier tamaño transformen su impacto ambiental sin poner en riesgo su capital operativo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROPÓSITO, MISIÓN Y VISIÓN -->
+        <section id="identidad">
+            <div class="container">
+                <div class="identity-grid">
+                    <div class="card" style="border-top: 4px solid var(--accent-green);">
+                        <h3 style="color: var(--accent-green);">Nuestro Propósito</h3>
+                        <p>Democratizar el acceso a la electromovilidad en el transporte masivo y comercial, demostrando que la sustentabilidad ambiental es el camino más rápido hacia la rentabilidad financiera.</p>
+                    </div>
+                    <div class="card" style="border-top: 4px solid var(--accent-green);">
+                        <h3 style="color: var(--accent-green);">Misión</h3>
+                        <p>Convertir flotas de combustión interna a sistemas 100% eléctricos de alta eficiencia mediante el modelo Flota como Servicio (FaaS), eliminando emisiones contaminantes y reduciendo drásticamente los costos de operación.</p>
+                    </div>
+                    <div class="card" style="border-top: 4px solid var(--accent-green);">
+                        <h3 style="color: var(--accent-green);">Visión</h3>
+                        <p>Ser la plataforma líder de transformación de transporte sostenible en América Latina para el año 2030, liderando la descarbonización de las principales rutas urbanas del continente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VALORES -->
+        <section id="valores" class="bg-alternativo">
+            <div class="container">
+                <h2 class="section-title">Nuestros <span>Valores</span></h2>
+                <div class="valores-grid">
+                    <div class="card">
+                        <h4 style="margin-bottom: 10px; color: var(--text-light)">Sustentabilidad Radical</h4>
+                        <p>Buscamos un impacto real y cuantificable en la reducción del CO2 del planeta en cada unidad que transformamos.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="margin-bottom: 10px; color: var(--text-light)">Innovación Disruptiva</h4>
+                        <p>Desafiamos los modelos de negocio tradicionales para crear soluciones de financiamiento y telemetría al alcance de todos.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="margin-bottom: 10px; color: var(--text-light)">Transparencia Financiera</h4>
+                        <p>Operamos bajo un esquema ganar-ganar, donde nuestros ingresos están directamente respaldados por tus ahorros reales.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="margin-bottom: 10px; color: var(--text-light)">Excelencia Operativa</h4>
+                        <p>Garantizamos el máximo estándar técnico, de seguridad y rendimiento de las baterías para mantener a tu empresa siempre en movimiento.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PESTAÑA 2: SERVICIOS -->
+    <div id="serviciosView" class="view-content independent-view hidden">
+        <div class="container">
+            <h2 class="section-title">Nuestros <span>Servicios de Ingeniería</span></h2>
+            <div class="general-grid">
+                <div class="card" id="srv-retrofitting">
+                    <h3>Retrofitting de Flotas</h3>
+                    <p>Conversión física total del tren motriz térmico a un sistema eléctrico sincrónico de alta eficiencia sin alterar el chasis original.</p>
+                </div>
+                <div class="card" id="srv-infraestructura">
+                    <h3>Infraestructura de Recarga (Smart Charging)</h3>
+                    <p>Diseño e instalación de estaciones de carga rápida directamente en los patios de pernocta de tu empresa.</p>
+                </div>
+                <div class="card" id="srv-telemetria">
+                    <h3>Plataforma de Telemetría H-Cloud</h3>
+                    <p>Monitoreo inteligente predictivo impulsado por IA para extender la vida útil del banco de baterías y prever mantenimientos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 3: NOVEDADES -->
+    <div id="novedadesView" class="view-content independent-view hidden">
+        <div class="container">
+            <h2 class="section-title">Centro de <span>Novedades</span></h2>
+            <div class="general-grid">
+                <div class="card">
+                    <span style="color: var(--accent-green); font-size: 0.85rem; font-weight: bold;">Julio 2026</span>
+                    <h3 style="margin-top: 5px;">Nueva Alianza de Celdas de Estado Sólido</h3>
+                    <p>Hemos concretado una alianza técnica para incorporar celdas de última generación, aumentando la autonomía un 25% más.</p>
+                </div>
+                <div class="card">
+                    <span style="color: var(--accent-green); font-size: 0.85rem; font-weight: bold;">Junio 2026</span>
+                    <h3 style="margin-top: 5px;">Mención en el Reporte de Movilidad LATAM</h3>
+                    <p>Heurística es reconocida como una de las empresas con mayor proyección en la reducción de huella de carbono industrial.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 4: EVENTOS -->
+    <div id="eventosView" class="view-content independent-view hidden">
+        <div class="container">
+            <h2 class="section-title">Próximos <span>Eventos</span></h2>
+            <div class="general-grid">
+                <div class="card" style="border-left: 4px solid var(--accent-green);">
+                    <h3>Summit Electromovilidad México</h3>
+                    <p><strong>Fecha:</strong> Octubre 2026</p>
+                    <p>Presentaremos los resultados del rendimiento financiero real del modelo FaaS aplicado a transporte urbano.</p>
+                </div>
+                <div class="card" style="border-left: 4px solid var(--accent-green);">
+                    <h3>Webinar: Optimización de Rutas Críticas</h3>
+                    <p><strong>Fecha:</strong> Agosto 2026</p>
+                    <p>Taller digital enfocado en directores de operaciones logísticas que buscan migrar a esquemas sustentables.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 5: REDES -->
+    <div id="redesView" class="view-content independent-view hidden">
+        <div class="container">
+            <h2 class="section-title">Nuestras <span>Redes Sociales</span></h2>
+            <div class="general-grid">
+                <div class="card social-link-card">
+                    <h3>LinkedIn</h3>
+                    <p>Conexiones corporativas, reportes de ahorro y actualizaciones financieras.</p>
+                    <a href="#" class="btn-social">Seguir en LinkedIn</a>
+                </div>
+                <div class="card social-link-card">
+                    <h3>YouTube</h3>
+                    <p>Videos documentales de nuestras conversiones y pruebas en ruta.</p>
+                    <a href="#" class="btn-social">Suscribirse al Canal</a>
+                </div>
+                <div class="card social-link-card">
+                    <h3>Instagram</h3>
+                    <p>Cápsulas informativas de tecnología energética y el día a día del equipo.</p>
+                    <a href="https://www.instagram.com/heuristica.energy/" target="_blank" rel="noopener" class="btn-social">Ver Comunidad</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA NUEVA: DIAGNÓSTICO / FORMULARIO INDEPENDIENTE -->
+    <div id="diagnosticoView" class="view-content independent-view hidden">
+        <div class="container">
+            <h2 class="section-title">Agendar Prueba y <span>Diagnóstico</span></h2>
+            
+            <div class="form-diagnostico-container">
+                <form id="formLeadDiagnostico" onsubmit="alert('¡Excelente! Recibimos tu solicitud. Nuestro equipo de ingenieros te contactará a la brevedad.');">
+                    <div class="form-group-diagnostico">
+                        <label for="leadName">Nombre del Responsable</label>
+                        <input type="text" id="leadName" placeholder="Ej. Ing. Carlos Mendoza" required>
+                    </div>
+                    
+                    <div class="form-group-diagnostico">
+                        <label for="leadCompany">Empresa</label>
+                        <input type="text" id="leadCompany" placeholder="Ej. Transportes del Norte S.A." required>
+                    </div>
+
+                    <div class="form-group-diagnostico">
+                        <label for="leadPhone">Teléfono de Contacto</label>
+                        <input type="tel" id="leadPhone" placeholder="Ej. 55 1234 5678" required>
+                    </div>
+
+                    <div class="form-group-diagnostico">
+                        <label for="leadSize">Tamaño de la Flota Actual</label>
+                        <select id="leadSize" required>
+                            <option value="">Selecciona una opción...</option>
+                            <option value="1-10">1 a 10 unidades</option>
+                            <option value="11-50">11 a 50 unidades</option>
+                            <option value="51-100">51 a 100 unidades</option>
+                            <option value="100+">Más de 100 unidades</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-diagnostico">
+                        <label for="leadComments">Mensaje o Detalles Adicionales</label>
+                        <textarea id="leadComments" rows="4" placeholder="Compártenos qué tipo de unidades tienes o tus rutas críticas..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" style="width: 100%; margin-top: 10px;">Enviar Solicitud</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 6: CONTACTO (SOLO CORREO Y WHATSAPP) -->
+    <div id="contactoView" class="view-content independent-view hidden">
+        <div class="container">
+            <h2 class="section-title">Ponte en <span>Contacto</span></h2>
+            
+            <div class="contact-simplified-grid">
+                <!-- Tarjeta de Correo -->
+                <div class="contact-item-card">
+                    <div class="contact-icon-wrapper">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
+                    <h3>Correo Electrónico</h3>
+                    <p>Escríbenos para dudas, cotizaciones o propuestas comerciales.</p>
+                    <a href="mailto:correo@organizacion.com" class="contact-link-btn">correo@organizacion.com</a>
+                </div>
+
+                <!-- Tarjeta de WhatsApp -->
+                <div class="contact-item-card">
+                    <div class="contact-icon-wrapper">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.76.457 3.47 1.328 4.981L2 22l5.184-1.359c1.45.79 3.082 1.207 4.748 1.207 5.507 0 10.038-4.482 10.038-9.988 0-2.665-1.036-5.17-2.92-7.054C17.167 2.922 14.677 2 12.012 2zm5.783 14.283c-.244.685-1.42 1.31-1.954 1.393-.487.076-1.121.137-3.238-.737-2.705-1.112-4.444-3.864-4.578-4.045-.137-.184-1.09-1.455-1.09-2.776 0-1.32.686-1.97.93-2.23.245-.258.534-.326.716-.326.183 0 .365.002.518.01.16.007.373-.062.585.45.213.518.73 1.783.793 1.913.061.13.102.282.015.45-.084.17-.13.275-.259.42-.13.15-.275.337-.393.453-.13.123-.267.257-.115.518.153.258.68 1.116 1.455 1.808.998.892 1.838 1.168 2.105 1.3.26.13.411.107.564-.07.152-.176.655-.763.83-1.02.176-.26.35-.214.594-.122.244.09 1.547.73 1.81.86.26.13.434.19.495.3.06.11.06.63-.183 1.314z"/>
+                        </svg>
+                    </div>
+                    <h3>WhatsApp</h3>
+                    <p>Chatea directamente con nuestro equipo de atención inmediata.</p>
+                    <a href="https://wa.me/521234567890" target="_blank" rel="noopener" class="contact-link-btn">Iniciar Chat</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL DE PERFIL -->
+    <div id="profileView" class="view-content profile-view hidden">
+        <div class="container">
+            <h2 class="section-title">Tu Panel Exclusivo <span>Heurística</span></h2>
+            
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="userAvatar">U</div>
+                    <div class="profile-info">
+                        <h3 id="userNameDisplay">Usuario Heurística</h3>
+                        <p id="userEmailDisplay">usuario@correo.com</p>
+                    </div>
+                </div>
+                <div class="profile-data-grid">
+                    <div class="data-card">
+                        <span>Estatus del Diagnóstico</span>
+                        <p style="color: var(--accent-green)">En Proceso Analítico</p>
+                    </div>
+                    <div class="data-card">
+                        <span>Unidades Registradas</span>
+                        <p>Pendiente por Formulario</p>
+                    </div>
+                    <div class="data-card">
+                        <span>Tipo de Contrato FaaS</span>
+                        <p>Pre-Asignado (5 Años)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>HEURÍSTICA © 2026 — Energía que impulsa el cambio sostenible.</p>
+        </div>
+    </footer>
+
+    <script>
+        let isLoggedIn = false;
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        const loginModal = document.getElementById('loginModal');
+        const headerLogo = document.getElementById('headerLogo');
+        
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+        const views = {
+            'home': document.getElementById('homeView'),
+            'servicios': document.getElementById('serviciosView'),
+            'novedades': document.getElementById('novedadesView'),
+            'eventos': document.getElementById('eventosView'),
+            'redes': document.getElementById('redesView'),
+            'diagnosticoView': document.getElementById('diagnosticoView'),
+            'contactoView': document.getElementById('contactoView'),
+            'profile': document.getElementById('profileView')
+        };
+
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+        const formLogin = document.getElementById('formLogin');
+        const formRegister = document.getElementById('formRegister');
+
+        /* --- CONTROL DE PRELOADER --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            
+            // Evaluamos si el usuario ya visitó el sitio en la sesión actual
+            if (!sessionStorage.getItem('firstTimeLoaded')) {
+                // Es la primera vez: Espera de 3 segundos
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 500); // Espera que termine la animación de desvanecimiento
+                }, 3000);
+                
+                // Registramos la visita
+                sessionStorage.setItem('firstTimeLoaded', 'true');
+            } else {
+                // Ya ha cargado antes: quitamos el loader de inmediato
+                preloader.style.display = 'none';
+            }
+
+            const currentHash = window.location.hash.replace('#', '') || 'home';
+            history.replaceState({ view: currentHash }, "", `#${currentHash}`);
+            switchView(currentHash);
+        });
+
+        function toggleSidebar() {
+            sidebarMenu.classList.toggle('open');
+            hamburgerBtn.classList.toggle('active');
+        }
+
+        function navigateTo(target) {
+            if (target === 'profile' && !isLoggedIn) return;
+            
+            history.pushState({ view: target }, "", `#${target}`);
+            switchView(target);
+        }
+
+        function switchView(target) {
+            if (target === 'home') {
+                document.body.classList.remove('light-theme');
+                headerLogo.style.opacity = '0';
+            } else {
+                document.body.classList.add('light-theme');
+                headerLogo.style.opacity = '1';
+            }
+
+            Object.keys(views).forEach(key => {
+                if (views[key]) {
+                    views[key].classList.add('hidden');
+                }
+            });
+
+            if (views[target]) {
+                views[target].classList.remove('hidden');
+            }
+
+            sidebarMenu.classList.remove('open');
+            hamburgerBtn.classList.remove('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.view) {
+                switchView(event.state.view);
+            } else {
+                switchView('home');
+            }
+        });
+
+        function handleServiceSearch(event) {
+            event.preventDefault();
+            const queryInput = document.getElementById('serviceSearchInput');
+            const errorMsg = document.getElementById('searchError');
+            const query = queryInput.value.trim().toLowerCase();
+
+            errorMsg.style.display = 'none';
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('highlighted-service'));
+
+            const serviceKeywords = {
+                'srv-retrofitting': ['retrofitting', 'retrofit', 'motor', 'tren motriz', 'diesel', 'gasolina', 'conversión', 'conve', 'chasis'],
+                'srv-infraestructura': ['infraestructura', 'carga', 'recarga', 'cargador', 'smart charging', 'patio', 'patios', 'estación', 'estaciones'],
+                'srv-telemetria': ['telemetría', 'telemetria', 'h-cloud', 'cloud', 'ia', 'bateria', 'baterías', 'monitoreo', 'software', 'rendimiento', 'ruta']
+            };
+
+            let matchedId = null;
+
+            for (const [cardId, keywords] of Object.entries(serviceKeywords)) {
+                const matchFound = keywords.some(keyword => query.includes(keyword) || keyword.includes(query));
+                if (matchFound) {
+                    matchedId = cardId;
+                    break;
+                }
+            }
+
+            if (matchedId) {
+                queryInput.value = '';
+                navigateTo('servicios');
+                
+                const targetCard = document.getElementById(matchedId);
+                if (targetCard) {
+                    targetCard.classList.add('highlighted-service');
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    setTimeout(() => {
+                        targetCard.classList.remove('highlighted-service');
+                    }, 4000);
+                }
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function handleUserBtnClick() {
+            if (!isLoggedIn) {
+                toggleModal(true);
+            } else {
+                userDropdown.classList.toggle('show');
+            }
+        }
+
+        function closeDropdown() {
+            userDropdown.classList.remove('show');
+        }
+
+        window.addEventListener('click', function(e) {
+            if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        function toggleModal(show) {
+            loginModal.style.display = show ? 'flex' : 'none';
+        }
+
+        function switchAuthTab(type) {
+            if (type === 'login') {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                formLogin.classList.add('active');
+                formRegister.classList.remove('active');
+            } else {
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                formRegister.classList.add('active');
+                formLogin.classList.remove('active');
+            }
+        }
+
+        function handleAuth(event, type) {
+            event.preventDefault();
+            isLoggedIn = true;
+            
+            let name = "Usuario Heurística";
+            let email = "";
+
+            if (type === 'login') {
+                email = document.getElementById('loginEmail').value;
+                name = email.split('@')[0].toUpperCase();
+            } else {
+                name = document.getElementById('regName').value;
+                email = document.getElementById('regEmail').value;
+            }
+
+            document.getElementById('userNameDisplay').innerText = name;
+            document.getElementById('userEmailDisplay').innerText = email;
+            
+            const initial = name.charAt(0).toUpperCase();
+            document.getElementById('userAvatar').innerText = initial;
+
+            userMenuBtn.classList.add('logged-in-avatar');
+            userMenuBtn.innerText = initial;
+            
+            loginModal.style.display = 'none';
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            userMenuBtn.classList.remove('logged-in-avatar');
+            userMenuBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" id="userIcon">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            `;
+            navigateTo('home');
+        }
+    </script>
+</body>
+</html>
