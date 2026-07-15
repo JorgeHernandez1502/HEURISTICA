@@ -1019,17 +1019,12 @@
             .hero {
                 background: url('logomovil.jpeg') no-repeat center center / 100% 100%;
                 padding-top: 30px; 
-                
-                /* 1. CONTROL DE ALTURA DESDE EL BORDE INFERIOR */
-                /* Sube este valor (ej. 50px, 60px) si quieres la barra más arriba */
-                /* Baja este valor (ej. 30px, 20px) si quieres que baje todavía más */
-                padding-bottom: 40px; 
-                
+                padding-bottom: 30px; 
                 min-height: 65vh; 
                 display: flex;
                 
-                /* 2. Alineamos todo abajo para poder empujarlo con el padding de arriba */
-                align-items: flex-end; 
+                /* 1. CENTRADO VERTICAL: Cambiamos flex-end por center */
+                align-items: center; 
                 justify-content: center;
             }
 
