@@ -7,16 +7,16 @@
     <style>
         /* --- VARIABLES DE COLOR Y ESTILOS BASE --- */
         :root {
-            --bg-dark: #0f172a;
-            --bg-card: #1B676B; 
+            --bg-dark: #36cf03;
+            --bg-card: #000000; 
             --text-light: #f8fafc;
             --text-muted: #e2e8f0; 
-            --accent-green: #BEF202; 
+            --accent-green: #e8c615; 
             --accent-green-hover: #a1ce02; 
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             
-            --bg-light-independent: #EAFDE6;
-            --header-independent: #1B676B;
+            --bg-light-independent: linear-gradient(135deg, #ffffff 0%, #9d9d9c 50%, #031244 100%);
+            --header-independent: #000000;
         }
 
         * {
@@ -169,9 +169,9 @@
 
         /* --- CLASE DINÁMICA PARA PESTAÑAS INDEPENDIENTES (TEMA CLARO) --- */
         body.light-theme {
-            background-color: var(--bg-light-independent);
-            color: #0f172a; 
-        }
+    background: var(--bg-light-independent) no-repeat fixed; /* Soporta el degradado y lo fija para que no se repita al hacer scroll */
+    color: #0f172a; 
+}
 
         .container {
             max-width: 1200px;
@@ -434,7 +434,7 @@
             color: #0f172a;
         }
         body.light-theme .section-title span {
-            color: #1B676B;
+            color: #000000;
         }
 
         /* --- INICIO (HOME) --- */
@@ -443,47 +443,41 @@
             padding-bottom: 120px;
             text-align: center;
             background: url('logo.jpeg') no-repeat center center/cover; 
-            min-height: 95vh;
+            min-height: 115vh;
             display: flex;
             align-items: center;
             transition: background 0.3s ease;
         }
 
         .hero-content-wrapper {
-            background-color: rgba(15, 23, 42, 0.35); /* Transparencia ultra limpia al 35% */
-            padding: 35px 40px;
-            border-radius: 12px;
-            margin: 0 auto;
-            max-width: 800px;
-            backdrop-filter: blur(3px); /* Desenfoque ligeramente mayor para que el texto flote sobre el fondo */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde un poco más brillante para definir el contorno */
-            display: flex;
-            flex-direction: column;
-            gap: 15px; 
-        } 
-
+    background-color: transparent; /* Quitamos el fondo */
+    border: none;                  /* Quitamos el borde */
+    backdrop-filter: none;         /* Quitamos el desenfoque */
+    box-shadow: none;              /* Quitamos la sombra */
+    
+    padding: 0; 
+    margin: 0 auto;
+    max-width: 550px;              /* Un ancho muy elegante para que la barra no sea gigante en PC */
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;                     /* Espacio entre la barra y el botón de abajo */
+    align-items: center;           /* Centra horizontalmente la barra y el botón */
+}
         .hero h1 {
-            font-size: 2.6rem;
-            font-weight: 800;
-            line-height: 1.15; 
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); 
-            color: var(--text-light);
-        }
+    display: none; /* Oculta el título en PC */
+}
 
-        .hero p {
-            font-size: 1.1rem;
-            line-height: 1.4; 
-            color: #e2e8f0; 
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-        }
+.hero p {
+    display: none; /* Oculta el párrafo en PC */
+}
 
         /* --- BARRA DE BÚSQUEDA --- */
         .search-container {
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto 10px auto;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
             position: relative;
         }
 
@@ -491,7 +485,7 @@
             display: flex;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
+            border-radius: 40px;
             padding: 4px;
             transition: all 0.3s ease;
         }
@@ -520,7 +514,7 @@
             background-color: var(--accent-green);
             border: none;
             color: #0f172a;
-            padding: 10px 22px;
+            padding: 20px 32px;
             border-radius: 25px;
             font-weight: bold;
             cursor: pointer;
@@ -1011,35 +1005,107 @@
             }
 
             .nav-buttons {
-                gap: 8px; 
+                gap: 6px; 
             }
 
-            .btn-cta {
-                font-size: 0.85rem;
-                padding: 6px 12px; 
+            header .btn-cta {
+                display: inline-block !important; 
+                font-size: 0.7rem !important;      
+                padding: 3px 7px !important;      
+                border-radius: 15px;               
+                white-space: nowrap;               
             }
 
             .hero {
-                background: url('1783973094729.jpg') no-repeat center center/cover;
-                padding-top: 105px;
-                padding-bottom: 45px;
-                min-height: 55vh;
+                background: url('logomovil.jpeg') no-repeat center center / 100% 100%;
+                padding-top: 30px; 
+                
+                /* 1. CONTROL DE ALTURA DESDE EL BORDE INFERIOR */
+                /* Sube este valor (ej. 50px, 60px) si quieres la barra más arriba */
+                /* Baja este valor (ej. 30px, 20px) si quieres que baje todavía más */
+                padding-bottom: 40px; 
+                
+                min-height: 65vh; 
+                display: flex;
+                
+                /* 2. Alineamos todo abajo para poder empujarlo con el padding de arriba */
+                align-items: flex-end; 
+                justify-content: center;
             }
 
             .hero-content-wrapper {
-                padding: 24px 20px;
-                margin: 0 10px;
-                width: calc(100% - 20px);
+                background-color: transparent; 
+                border: none;                  
+                backdrop-filter: none;         
+                box-shadow: none;              
+                
+                padding: 0 20px; 
+                margin: 0 auto;
+                
+                /* 2. BARRA MÁS PEQUEÑA: Reducimos el ancho máximo de la barra en celular (estaba en 100%) */
+                max-width: 290px; /* Tamaño ideal y compacto para pantallas de móvil */
+                width: 100%;
+                
+                display: flex;
+                flex-direction: column;
+                gap: 22px; /* Espacio reducido entre la barra y el botón de abajo */
+                align-items: center; 
+                justify-content: center;
             }
 
-            .hero h1 {
-                font-size: 1.8rem;
-                margin-bottom: 15px;
+            .hero-content-wrapper .btn-cta,
+            .hero .btn-cta {
+                display: inline-block !important; /* Asegura que se muestre */
+                font-size: 0.75rem !important;    /* Reducimos el tamaño de la letra */
+                padding: 8px 16px !important;     /* Reducimos el colchón (grosor) del botón */
+                border-radius: 20px !important;   /* Bordes un poco más sutiles */
+                width: auto !important;           /* Evita que se estire a lo ancho */
+                text-align: center;
             }
 
+            /* Mantenemos ocultos el título y el párrafo */
+            .hero h1,
             .hero p {
-                font-size: 1.1rem;
-                margin-bottom: 20px;
+                display: none !important;
+            }
+
+            /* Caja de búsqueda más compacta y estilizada */
+            .search-box {
+                width: 100%;
+                max-width: 100%;
+                padding: 3px; /* Reducimos el grosor general */
+                background-color: rgba(15, 23, 42, 0.85); 
+                border-radius: 30px;
+            }
+
+            .search-input {
+                font-size: 0.75rem; /* Texto interno ligeramente más pequeño */
+                padding: 6px 10px;
+                color: #ffffff;
+            }
+
+            .search-btn {
+                padding: 6px 12px; /* Botón de búsqueda más pequeño */
+                font-size: 0.75rem; 
+            }
+
+            /* Hacemos el botón de usuario/perfil más compacto en móvil */
+            .nav-buttons .btn-user,
+            .nav-buttons .user-btn,
+            .nav-buttons .profile-btn,
+            header .btn-user {
+                font-size: 0.7rem !important;      /* Letra o icono más pequeño */
+                padding: 5px 8px !important;       /* Colchón reducido */
+                display: flex !important;          /* Alinea icono y texto si los hay */
+                align-items: center;
+                gap: 4px;                          /* Espacio pequeño si tiene un icono al lado */
+            }
+
+            /* Si tu botón de usuario es solo un icono redondo (avatar) */
+            .nav-buttons .user-avatar,
+            .nav-buttons .profile-img {
+                width: 24px !important;            /* Ancho mini */
+                height: 24px !important;           /* Alto mini */
             }
         }
     </style>
