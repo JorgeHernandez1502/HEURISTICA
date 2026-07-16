@@ -43,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff; /* Fondo completamente blanco */
+            background-color: #ffffff; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -52,7 +52,6 @@
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        /* Contenedor del Loader con conectores y rayo */
         .loader-container {
             position: relative;
             width: 150px;
@@ -62,7 +61,6 @@
             align-items: center;
         }
 
-        /* El rayo verde en el centro */
         .rayo-verde {
             width: 50px;
             height: 50px;
@@ -72,17 +70,15 @@
             z-index: 2;
         }
 
-        /* Los conectores que orbitan y "cargan" el rayo */
         .conector {
             position: absolute;
             width: 14px;
             height: 14px;
-            background-color: #1B676B; /* Color de los conectores */
+            background-color: #1B676B; 
             border-radius: 3px;
             z-index: 1;
         }
 
-        /* Simulamos los cabezales metálicos de los conectores */
         .conector::after {
             content: '';
             position: absolute;
@@ -95,63 +91,21 @@
             box-shadow: 0 0 4px var(--accent-green);
         }
 
-        /* Posicionamiento y rotación individual de los conectores apuntando al centro */
-        .conector:nth-child(1) {
-            top: 10px;
-            left: 68px;
-            transform: rotate(0deg);
-            animation: orbita-carga-1 2s infinite linear;
-        }
-        .conector:nth-child(2) {
-            bottom: 10px;
-            left: 68px;
-            transform: rotate(180deg);
-            animation: orbita-carga-2 2s infinite linear;
-        }
-        .conector:nth-child(3) {
-            top: 68px;
-            left: 10px;
-            transform: rotate(-90deg);
-            animation: orbita-carga-3 2s infinite linear;
-        }
-        .conector:nth-child(4) {
-            top: 68px;
-            right: 10px;
-            transform: rotate(90deg);
-            animation: orbita-carga-4 2s infinite linear;
-        }
+        .conector:nth-child(1) { top: 10px; left: 68px; transform: rotate(0deg); animation: orbita-carga-1 2s infinite linear; }
+        .conector:nth-child(2) { bottom: 10px; left: 68px; transform: rotate(180deg); animation: orbita-carga-2 2s infinite linear; }
+        .conector:nth-child(3) { top: 68px; left: 10px; transform: rotate(-90deg); animation: orbita-carga-3 2s infinite linear; }
+        .conector:nth-child(4) { top: 68px; right: 10px; transform: rotate(90deg); animation: orbita-carga-4 2s infinite linear; }
 
-        /* Animación del Rayo Central */
         @keyframes pulse-rayo {
-            0%, 100% {
-                transform: scale(0.9);
-                filter: drop-shadow(0 0 4px rgba(190, 242, 2, 0.5));
-            }
-            50% {
-                transform: scale(1.15);
-                filter: drop-shadow(0 0 15px rgba(190, 242, 2, 1));
-            }
+            0%, 100% { transform: scale(0.9); filter: drop-shadow(0 0 4px rgba(190, 242, 2, 0.5)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 15px rgba(190, 242, 2, 1)); }
         }
 
-        /* Animación de los conectores "inyectando" energía al centro */
-        @keyframes orbita-carga-1 {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(12px) rotate(0deg); }
-        }
-        @keyframes orbita-carga-2 {
-            0%, 100% { transform: translateY(0) rotate(180deg); }
-            50% { transform: translateY(-12px) rotate(180deg); }
-        }
-        @keyframes orbita-carga-3 {
-            0%, 100% { transform: translateX(0) rotate(-90deg); }
-            50% { transform: translateX(12px) rotate(-90deg); }
-        }
-        @keyframes orbita-carga-4 {
-            0%, 100% { transform: translateX(0) rotate(90deg); }
-            50% { transform: translateX(-12px) rotate(90deg); }
-        }
+        @keyframes orbita-carga-1 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(12px) rotate(0deg); } }
+        @keyframes orbita-carga-2 { 0%, 100% { transform: translateY(0) rotate(180deg); } 50% { transform: translateY(-12px) rotate(180deg); } }
+        @keyframes orbita-carga-3 { 0%, 100% { transform: translateX(0) rotate(-90deg); } 50% { transform: translateX(12px) rotate(-90deg); } }
+        @keyframes orbita-carga-4 { 0%, 100% { transform: translateX(0) rotate(90deg); } 50% { transform: translateX(-12px) rotate(90deg); } }
 
-        /* Texto sutil debajo del cargador */
         .loader-text {
             margin-top: 25px;
             color: #1f2937;
@@ -162,16 +116,12 @@
             animation: fade-text 1.5s infinite ease-in-out;
         }
 
-        @keyframes fade-text {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
+        @keyframes fade-text { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        /* --- CLASE DINÁMICA PARA PESTAÑAS INDEPENDIENTES (TEMA CLARO) --- */
         body.light-theme {
-    background: var(--bg-light-independent) no-repeat fixed; /* Soporta el degradado y lo fija para que no se repita al hacer scroll */
-    color: #0f172a; 
-}
+            background: var(--bg-light-independent) no-repeat fixed; 
+            color: #0f172a; 
+        }
 
         .container {
             max-width: 1200px;
@@ -210,15 +160,13 @@
             position: relative;
         }
 
-        /* --- LOGOTIPO --- */
         #headerLogo {
             height: 70px; 
             margin-right: 40px; 
             opacity: 1; 
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, height 0.2s ease;
         }
 
-        /* --- BOTÓN HAMBURGUESA --- */
         .menu-desplegable {
             background: none;
             border: none;
@@ -245,17 +193,10 @@
             background-color: var(--text-light);
         }
 
-        .menu-desplegable.active span:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
-        }
-        .menu-desplegable.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-desplegable.active span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
-        }
+        .menu-desplegable.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-desplegable.active span:nth-child(2) { opacity: 0; }
+        .menu-desplegable.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* MENÚ LATERAL DESPLEGABLE (SIDEBAR) */
         .sidebar-menu {
             position: fixed; 
             top: 0;
@@ -273,9 +214,7 @@
             z-index: 1050;
         }
 
-        .sidebar-menu.open {
-            left: 0;
-        }
+        .sidebar-menu.open { left: 0; }
 
         .sidebar-btn {
             background: none;
@@ -301,6 +240,125 @@
             gap: 15px;
             transition: gap 0.3s ease;
             position: relative;
+        }
+
+        /* --- BARRA DE BÚSQUEDA GRANDE EN PC / MINI EN MÓVIL --- */
+        .header-search-container {
+            flex: 1;
+            max-width: 580px; 
+            margin: 0 40px;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            position: relative;
+        }
+
+        .header-search-container .search-box {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.65); 
+            border: 1.5px solid rgba(255, 255, 255, 0.25); 
+            border-radius: 30px;
+            padding: 6px; 
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-theme .header-search-container .search-box {
+            background-color: rgba(0, 0, 0, 0.12); 
+            border-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .header-search-container .search-input {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 8px 18px;
+            font-size: 0.95rem; 
+            outline: none;
+            color: var(--text-light);
+        }
+
+        body.light-theme .header-search-container .search-input {
+            color: #0f172a;
+        }
+
+        .header-search-container .search-btn {
+            background-color: var(--accent-green);
+            border: none;
+            color: #0f172a;
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .header-search-container .search-btn:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        /* --- MENÚ DE SUGERENCIAS PREDICTIVAS --- */
+        .suggestions-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #000000;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            margin-top: 6px;
+            list-style: none;
+            max-height: 220px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1200;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        body.light-theme .suggestions-dropdown {
+            background-color: #ffffff;
+            border-color: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .suggestions-dropdown li {
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        body.light-theme .suggestions-dropdown li {
+            color: #0f172a;
+            border-bottom-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .suggestions-dropdown li:hover {
+            background: rgba(54, 207, 3, 0.15);
+            color: var(--accent-green);
+        }
+
+        .search-error-msg {
+            color: #f87171;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            font-weight: 500;
+            display: none;
+            position: absolute;
+            background-color: rgba(15, 23, 42, 0.95);
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1100;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         /* --- BOTÓN DE USUARIO --- */
@@ -335,9 +393,7 @@
             transition: fill 0.3s ease;
         }
 
-        .btn-user:hover svg {
-            fill: var(--accent-green);
-        }
+        .btn-user:hover svg { fill: var(--accent-green); }
 
         .btn-user.logged-in-avatar {
             background-color: var(--accent-green);
@@ -347,7 +403,6 @@
             border-color: var(--accent-green);
         }
 
-        /* --- DROPDOWN EXCLUSIVO DE SESIÓN --- */
         .user-dropdown {
             display: none;
             position: absolute;
@@ -368,9 +423,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .user-dropdown.show {
-            display: block;
-        }
+        .user-dropdown.show { display: block; }
 
         .user-dropdown button {
             width: 100%;
@@ -390,9 +443,7 @@
             color: var(--accent-green);
         }
 
-        .user-dropdown button:first-child {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        .user-dropdown button:first-child { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
 
         body.light-theme .user-dropdown {
             background-color: var(--header-independent);
@@ -411,18 +462,36 @@
             white-space: nowrap;
         }
 
-        .btn-cta:hover {
+        .btn-cta:hover { background-color: var(--accent-green-hover); }
+
+        /* --- BOTÓN FLOTANTE ORIGINAL --- */
+        .btn-diagnostico-flotante {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--accent-green);
+            color: #0f172a;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(54, 207, 3, 0.4);
+            z-index: 998;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .btn-diagnostico-flotante:hover {
             background-color: var(--accent-green-hover);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(161, 206, 2, 0.5);
         }
 
-        /* --- CONTROL DE VISTAS --- */
-        .view-content {
-            display: block;
-        }
-
-        .view-content.hidden {
-            display: none !important;
-        }
+        .view-content { display: block; }
+        .view-content.hidden { display: none !important; }
 
         .independent-view {
             padding-top: 140px;
@@ -430,115 +499,23 @@
             flex: 1;
         }
 
-        body.light-theme .section-title {
-            color: #0f172a;
-        }
-        body.light-theme .section-title span {
-            color: #000000;
-        }
+        body.light-theme .section-title { color: #0f172a; }
+        body.light-theme .section-title span { color: #000000; }
 
         /* --- INICIO (HOME) --- */
         .hero {
             padding-top: 180px;
             padding-bottom: 120px;
             text-align: center;
-            background: url('logo2.jpeg') no-repeat center center/cover; 
+            background: url('logo3.jpeg') no-repeat center center/cover; 
             min-height: 115vh;
             display: flex;
             align-items: center;
+            justify-content: center;
             transition: background 0.3s ease;
         }
 
-        .hero-content-wrapper {
-    background-color: transparent; /* Quitamos el fondo */
-    border: none;                  /* Quitamos el borde */
-    backdrop-filter: none;         /* Quitamos el desenfoque */
-    box-shadow: none;              /* Quitamos la sombra */
-    
-    padding: 0; 
-    margin: 0 auto;
-    max-width: 550px;              /* Un ancho muy elegante para que la barra no sea gigante en PC */
-    width: 100%;
-    
-    display: flex;
-    flex-direction: column;
-    gap: 20px;                     /* Espacio entre la barra y el botón de abajo */
-    align-items: center;           /* Centra horizontalmente la barra y el botón */
-}
-        .hero h1 {
-    display: none; /* Oculta el título en PC */
-}
-
-.hero p {
-    display: none; /* Oculta el párrafo en PC */
-}
-
-        /* --- BARRA DE BÚSQUEDA --- */
-        .search-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto 40px auto;
-            position: relative;
-        }
-
-        .search-box {
-            display: flex;
-            background: rgba(0, 0, 0, 0.527);
-            border: 2px solid rgba(5, 0, 0, 0.753);
-            border-radius: 40px;
-            padding: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .search-box:focus-within {
-            border-color: var(--accent-green);
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 10px rgba(190, 242, 2, 0.2);
-        }
-
-        .search-input {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 10px 20px;
-            color: var(--text-light);
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        .search-input::placeholder {
-            color: #94a3b8;
-        }
-
-        .search-btn {
-            background-color: var(--accent-green);
-            border: none;
-            color: #0f172a;
-            padding: 20px 32px;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .search-btn:hover {
-            background-color: var(--accent-green-hover);
-        }
-
-        .search-error-msg {
-            color: #f87171;
-            font-size: 0.9rem;
-            margin-top: 5px;
-            font-weight: 500;
-            display: none;
-            animation: shake 0.3s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
+        .hero-content-wrapper { display: none; }
 
         .stats {
             background-color: var(--bg-card);
@@ -567,9 +544,7 @@
             font-weight: 500;
         }
 
-        section {
-            padding: 100px 0;
-        }
+        section { padding: 100px 0; }
 
         .section-title {
             text-align: center;
@@ -578,9 +553,7 @@
             color: var(--text-light);
         }
 
-        .section-title span {
-            color: var(--accent-green);
-        }
+        .section-title span { color: var(--accent-green); }
 
         .faas-grid, .identity-grid, .valores-grid, .general-grid {
             display: grid;
@@ -588,9 +561,7 @@
             gap: 30px;
         }
 
-        .valores-grid {
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        }
+        .valores-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 
         .card {
             background-color: var(--bg-card);
@@ -607,20 +578,11 @@
             box-shadow: 0 0 20px rgba(190, 242, 2, 0.3);
         }
 
-        .card h3, .card h4 {
-            margin-bottom: 15px;
-        }
+        .card h3, .card h4 { margin-bottom: 15px; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
 
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+        body.light-theme .card { box-shadow: 0 4px 15px rgba(27, 103, 107, 0.15); }
 
-        body.light-theme .card {
-            box-shadow: 0 4px 15px rgba(27, 103, 107, 0.15);
-        }
-
-        /* --- IDENTIDAD --- */
         .quienes-somos-box {
             background-color: var(--bg-card);
             border: 1px solid rgba(255,255,255,0.1);
@@ -643,7 +605,6 @@
             border-bottom: 1px solid rgba(27, 103, 107, 0.3);
         }
 
-        /* --- NUEVO FORMULARIO DE DIAGNÓSTICO (VISTA INDEPENDIENTE) --- */
         .form-diagnostico-container {
             max-width: 600px;
             margin: 0 auto;
@@ -691,7 +652,6 @@
             border-color: var(--accent-green);
         }
 
-        /* --- CONTACTO SIMPLIFICADO --- */
         .contact-simplified-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -764,7 +724,6 @@
             transform: translateY(-2px);
         }
 
-        /* --- PESTAÑA PERFIL --- */
         .profile-view {
             padding-top: 160px;
             padding-bottom: 100px;
@@ -802,14 +761,8 @@
             border-radius: 50%;
         }
 
-        .profile-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .profile-info p {
-            color: var(--text-muted);
-        }
+        .profile-info h3 { font-size: 1.5rem; margin-bottom: 5px; }
+        .profile-info p { color: var(--text-muted); }
 
         .profile-data-grid {
             display: grid;
@@ -831,12 +784,8 @@
             margin-bottom: 5px;
         }
 
-        .data-card p {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
+        .data-card p { font-size: 1.1rem; font-weight: 600; }
 
-        /* ESTILOS DE REDES SOCIALES */
         .social-link-card {
             display: flex;
             flex-direction: column;
@@ -848,9 +797,7 @@
             color: var(--accent-green);
             font-size: 1.5rem;
         }
-        body.light-theme .social-link-card h3 {
-            color: var(--accent-green);
-        }
+        body.light-theme .social-link-card h3 { color: var(--accent-green); }
         .btn-social {
             margin-top: 15px;
             display: inline-block;
@@ -867,7 +814,6 @@
             color: var(--accent-green);
         }
 
-        /* --- RESTAURACIÓN DE ESTILOS DEL MODAL (INICIO/REGISTRO) --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -905,9 +851,7 @@
             transition: color 0.2s;
         }
 
-        .modal-box .close-btn:hover {
-            color: var(--accent-green);
-        }
+        .modal-box .close-btn:hover { color: var(--accent-green); }
 
         .modal-tabs {
             display: flex;
@@ -936,21 +880,10 @@
             margin-bottom: -2px;
         }
 
-        .auth-form {
-            display: none;
-        }
+        .auth-form { display: none; }
+        .auth-form.active { display: flex; flex-direction: column; gap: 15px; }
 
-        .auth-form.active {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
+        .form-group { display: flex; flex-direction: column; }
         .form-group input {
             width: 100%;
             padding: 12px 16px;
@@ -963,9 +896,7 @@
             transition: border-color 0.3s;
         }
 
-        .form-group input:focus {
-            border-color: var(--accent-green);
-        }
+        .form-group input:focus { border-color: var(--accent-green); }
 
         .btn-submit {
             background-color: var(--accent-green);
@@ -979,13 +910,8 @@
             transition: background-color 0.2s, transform 0.1s;
         }
 
-        .btn-submit:hover {
-            background-color: var(--accent-green-hover);
-        }
-
-        .btn-submit:active {
-            transform: scale(0.98);
-        }
+        .btn-submit:hover { background-color: var(--accent-green-hover); }
+        .btn-submit:active { transform: scale(0.98); }
 
         footer {
             background-color: #020617;
@@ -997,124 +923,106 @@
             margin-top: auto;
         }
 
-        /* --- RESPONSIVE --- */
+        /* --- CONFIGURACIÓN ULTRA-COMPACTA PARA MÓVIL (MAX-WIDTH: 768px) --- */
         @media (max-width: 768px) {
             header .container {
-                height: 70px; 
-                padding: 0 12px;
+                height: 75px;
+                padding: 10px 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 5px; 
+            }
+
+            .nav-left {
+                gap: 5px;
+            }
+
+            #headerLogo {
+                height: 46px; /* LOGO MÁS GRANDE EN MÓVILES */
+                margin-right: 24px; 
+            }
+
+            /* LA BARRA DE BÚSQUEDA AHORA ES FLEXIBLE (SIN !IMPORTANT QUE BLOQUEE AL JS) */
+            .header-search-container {
+                display: block; /* Quitamos !important para que el JS pueda esconderla */
+                margin: 0 4px;
+                max-width: 110px;
+                flex: 1;
+            }
+
+            .header-search-container .search-box {
+                padding: 3px 6px;
+                border-radius: 15px;
+                border-color: rgba(255, 255, 255, 0.15);
+            }
+
+            .header-search-container .search-input {
+                padding: 4px 6px;
+                font-size: 0.72rem; 
+            }
+
+            .header-search-container .search-btn {
+                display: none !important;
+            }
+
+            .suggestions-dropdown {
+                max-height: 180px;
+                border-radius: 8px;
+            }
+
+            .suggestions-dropdown li {
+                padding: 8px 12px;
+                font-size: 0.8rem;
             }
 
             .nav-buttons {
-                gap: 6px; 
+                gap: 5px;
             }
 
             header .btn-cta {
                 display: inline-block !important; 
-                font-size: 0.7rem !important;      
-                padding: 3px 7px !important;      
-                border-radius: 15px;               
+                font-size: 0.68rem !important;      
+                padding: 6px 10px !important;      
+                border-radius: 12px;               
                 white-space: nowrap;               
             }
 
+            .btn-user {
+                width: 32px !important;
+                height: 32px !important;
+            }
+
+            .btn-user svg {
+                width: 15px !important;
+                height: 15px !important;
+            }
+
             .hero {
-                background: url('logo2.jpeg') no-repeat center center / 100% 100%;
-                padding-top: 30px; 
-                padding-bottom: 30px; 
+                background: url('logo3.jpeg') no-repeat center center / 100% 100%;
                 min-height: 55vh; 
                 display: flex;
-                
-                /* 1. CENTRADO VERTICAL: Cambiamos flex-end por center */
                 align-items: center; 
                 justify-content: center;
             }
 
-            .hero-content-wrapper {
-                background-color: transparent; 
-                border: none;                  
-                backdrop-filter: none;         
-                box-shadow: none;              
-                
-                padding: 0 20px; 
-                margin: 0 auto;
-                
-                /* 2. BARRA MÁS PEQUEÑA: Reducimos el ancho máximo de la barra en celular (estaba en 100%) */
-                max-width: 290px; /* Tamaño ideal y compacto para pantallas de móvil */
-                width: 100%;
-                
-                display: flex;
-                flex-direction: column;
-                gap: 22px; /* Espacio reducido entre la barra y el botón de abajo */
-                align-items: center; 
-                justify-content: center;
-            }
-
-            .hero-content-wrapper .btn-cta,
-            .hero .btn-cta {
-                display: inline-block !important; /* Asegura que se muestre */
-                font-size: 0.75rem !important;    /* Reducimos el tamaño de la letra */
-                padding: 8px 16px !important;     /* Reducimos el colchón (grosor) del botón */
-                border-radius: 20px !important;   /* Bordes un poco más sutiles */
-                width: auto !important;           /* Evita que se estire a lo ancho */
-                text-align: center;
-            }
-
-            /* Mantenemos ocultos el título y el párrafo */
-            .hero h1,
-            .hero p {
-                display: none !important;
-            }
-
-            /* Caja de búsqueda más compacta y estilizada */
-            .search-box {
-                width: 100%;
-                max-width: 100%;
-                padding: 3px; /* Reducimos el grosor general */
-                background-color: rgba(15, 23, 42, 0.85); 
-                border-radius: 30px;
-            }
-
-            .search-input {
-                font-size: 0.75rem; /* Texto interno ligeramente más pequeño */
-                padding: 6px 10px;
-                color: #ffffff;
-            }
-
-            .search-btn {
-                padding: 6px 12px; /* Botón de búsqueda más pequeño */
-                font-size: 0.75rem; 
-            }
-
-            /* Hacemos el botón de usuario/perfil más compacto en móvil */
-            .nav-buttons .btn-user,
-            .nav-buttons .user-btn,
-            .nav-buttons .profile-btn,
-            header .btn-user {
-                font-size: 0.7rem !important;      /* Letra o icono más pequeño */
-                padding: 5px 8px !important;       /* Colchón reducido */
-                display: flex !important;          /* Alinea icono y texto si los hay */
-                align-items: center;
-                gap: 4px;                          /* Espacio pequeño si tiene un icono al lado */
-            }
-
-            /* Si tu botón de usuario es solo un icono redondo (avatar) */
-            .nav-buttons .user-avatar,
-            .nav-buttons .profile-img {
-                width: 24px !important;            /* Ancho mini */
-                height: 24px !important;           /* Alto mini */
+            .btn-diagnostico-flotante {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                font-size: 0.85rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- PRELOADER CON PINES DE CONEXIÓN Y RAYO VERDE (FONDO BLANCO) -->
+    <!-- PRELOADER CON PINES DE CONEXIÓN Y RAYO VERDE -->
     <div id="preloader">
         <div class="loader-container">
-            <!-- Rayo central verde -->
             <svg class="rayo-verde" viewBox="0 0 24 24">
                 <path d="M11 21h-1l1.5-7h-5.5l8-12h1l-1.5 7h5.5z"/>
             </svg>
-            <!-- 4 Conectores cargando el centro -->
             <div class="conector"></div>
             <div class="conector"></div>
             <div class="conector"></div>
@@ -1122,6 +1030,14 @@
         </div>
         <div class="loader-text">Cargando Energía</div>
     </div>
+
+    <!-- BOTÓN FLOTANTE "DIAGNÓSTICO GRATIS" -->
+    <a href="#" id="floatingDiagBtn" class="btn-diagnostico-flotante" onclick="event.preventDefault(); navigateTo('diagnosticoView')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle;">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+        </svg>
+        Diagnóstico Gratis
+    </a>
 
     <header>
         <div class="container">
@@ -1145,6 +1061,16 @@
                 </nav>
             </div>
             
+            <!-- BARRA DE BÚSQUEDA DEL HEADER -->
+            <div class="header-search-container" id="headerSearch">
+                <form onsubmit="handleServiceSearch(event)" class="search-box">
+                    <input type="text" id="serviceSearchInput" class="search-input" placeholder="Buscar..." required autocomplete="off">
+                    <button type="submit" class="search-btn">Buscar</button>
+                </form>
+                <ul id="search-suggestions-pc" class="suggestions-dropdown"></ul>
+                <div id="searchError" class="search-error-msg">No existe ese tipo de búsqueda</div>
+            </div>
+            
             <div class="nav-buttons">
                 <div class="user-menu-container">
                     <button class="btn-user" id="userMenuBtn" onclick="handleUserBtnClick()" aria-label="Menú de usuario">
@@ -1159,7 +1085,7 @@
                     </div>
                 </div>
 
-                <a href="#" id="ctaNavBtn" class="btn-cta" onclick="event.preventDefault(); navigateTo('diagnosticoView')">Agendar Prueba</a>
+                <a href="#" id="ctaNavBtn" class="btn-cta" onclick="event.preventDefault(); navigateTo('diagnosticoView')">Agendar</a>
             </div>
         </div>
     </header>
@@ -1203,24 +1129,8 @@
 
     <!-- PESTAÑA 1: INICIO (HOME) -->
     <div id="homeView" class="view-content">
-        <section class="hero">
-            <div class="hero-content-wrapper">
-                <h1>Transformamos tu flota actual en un sistema eléctrico rentable.</h1>
-                <p>Sin inversión inicial. Reducimos tus costos operativos y eliminamos tus emisiones con nuestro modelo FaaS a 5 años.</p>
-                
-                <div class="search-container">
-                    <form onsubmit="handleServiceSearch(event)" class="search-box">
-                        <input type="text" id="serviceSearchInput" class="search-input" placeholder="Buscar servicios (ej. Retrofitting, Telemetría...)" required autocomplete="off">
-                        <button type="submit" class="search-btn">Buscar</button>
-                    </form>
-                    <div id="searchError" class="search-error-msg">No existe ese tipo de búsqueda[cite: 1]</div>
-                </div>
-
-                <div style="margin-top: 10px;">
-                    <a href="#" class="btn-cta" onclick="event.preventDefault(); navigateTo('diagnosticoView')" style="padding: 12px 28px; font-size: 1rem;">Solicitar Diagnóstico Gratis</a>
-                </div>
-            </div>
-        </section>
+        <!-- Hero Despejado -->
+        <section class="hero"></section>
 
         <!-- BARRA DE LOGROS -->
         <div class="stats">
@@ -1409,7 +1319,7 @@
         </div>
     </div>
 
-    <!-- PESTAÑA NUEVA: DIAGNÓSTICO / FORMULARIO INDEPENDIENTE -->
+    <!-- PESTAÑA: DIAGNÓSTICO -->
     <div id="diagnosticoView" class="view-content independent-view hidden">
         <div class="container">
             <h2 class="section-title">Agendar Prueba y <span>Diagnóstico</span></h2>
@@ -1453,13 +1363,12 @@
         </div>
     </div>
 
-    <!-- PESTAÑA 6: CONTACTO (SOLO CORREO Y WHATSAPP) -->
+    <!-- PESTAÑA 6: CONTACTO -->
     <div id="contactoView" class="view-content independent-view hidden">
         <div class="container">
             <h2 class="section-title">Ponte en <span>Contacto</span></h2>
             
             <div class="contact-simplified-grid">
-                <!-- Tarjeta de Correo -->
                 <div class="contact-item-card">
                     <div class="contact-icon-wrapper">
                         <svg viewBox="0 0 24 24">
@@ -1471,7 +1380,6 @@
                     <a href="mailto:correo@organizacion.com" class="contact-link-btn">correo@organizacion.com</a>
                 </div>
 
-                <!-- Tarjeta de WhatsApp -->
                 <div class="contact-item-card">
                     <div class="contact-icon-wrapper">
                         <svg viewBox="0 0 24 24">
@@ -1530,6 +1438,8 @@
         const userDropdown = document.getElementById('userDropdown');
         const loginModal = document.getElementById('loginModal');
         const headerLogo = document.getElementById('headerLogo');
+        const headerSearch = document.getElementById('headerSearch');
+        const floatingDiagBtn = document.getElementById('floatingDiagBtn');
         
         const sidebarMenu = document.getElementById('sidebarMenu');
         const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -1554,21 +1464,17 @@
         window.addEventListener('DOMContentLoaded', () => {
             const preloader = document.getElementById('preloader');
             
-            // Evaluamos si el usuario ya visitó el sitio en la sesión actual
             if (!sessionStorage.getItem('firstTimeLoaded')) {
-                // Es la primera vez: Espera de 3 segundos
                 setTimeout(() => {
                     preloader.style.opacity = '0';
                     preloader.style.transform = 'scale(1.1)';
                     setTimeout(() => {
                         preloader.style.display = 'none';
-                    }, 500); // Espera que termine la animación de desvanecimiento
+                    }, 500); 
                 }, 3000);
                 
-                // Registramos la visita
                 sessionStorage.setItem('firstTimeLoaded', 'true');
             } else {
-                // Ya ha cargado antes: quitamos el loader de inmediato
                 preloader.style.display = 'none';
             }
 
@@ -1590,6 +1496,24 @@
         }
 
         function switchView(target) {
+            // CONTROL DE VISIBILIDAD DE LA BARRA DE BÚSQUEDA (SÓLO APARECE EN INICIO)
+            if (headerSearch) {
+                if (target === 'home') {
+                    headerSearch.style.display = 'block';
+                } else {
+                    headerSearch.style.display = 'none';
+                }
+            }
+
+            // CONTROL DEL BOTÓN FLOTANTE "DIAGNÓSTICO GRATIS" (SÓLO EN INICIO)
+            if (floatingDiagBtn) {
+                if (target === 'home') {
+                    floatingDiagBtn.style.display = 'inline-flex';
+                } else {
+                    floatingDiagBtn.style.display = 'none';
+                }
+            }
+
             if (target === 'home') {
                 document.body.classList.remove('light-theme');
                 headerLogo.style.opacity = '0';
@@ -1622,6 +1546,77 @@
             }
         });
 
+        /* --- BASE DE DATOS PARA AUTOCOMPLETADO Y BÚSQUEDA --- */
+        const dbServicios = [
+            { nombre: "Retrofitting de Flotas", key: "retrofitting", targetId: "srv-retrofitting" },
+            { nombre: "Conversión de Tren Motriz", key: "conversión", targetId: "srv-retrofitting" },
+            { nombre: "Infraestructura de Recarga", key: "infraestructura", targetId: "srv-infraestructura" },
+            { nombre: "Smart Charging (Carga)", key: "carga", targetId: "srv-infraestructura" },
+            { nombre: "Telemetría H-Cloud", key: "telemetría", targetId: "srv-telemetria" },
+            { nombre: "Monitoreo de Baterías", key: "baterías", targetId: "srv-telemetria" }
+        ];
+
+        function initAutocomplete(inputId, suggestionsId) {
+            const inputElement = document.getElementById(inputId);
+            const suggestionsElement = document.getElementById(suggestionsId);
+
+            if (!inputElement || !suggestionsElement) return;
+
+            inputElement.addEventListener('input', (e) => {
+                const val = e.target.value.toLowerCase().trim();
+                suggestionsElement.innerHTML = '';
+
+                if (!val) {
+                    suggestionsElement.style.display = 'none';
+                    return;
+                }
+
+                const filtered = dbServicios.filter(item => 
+                    item.nombre.toLowerCase().includes(val) || item.key.toLowerCase().includes(val)
+                );
+
+                if (filtered.length > 0) {
+                    filtered.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item.nombre;
+                        li.addEventListener('click', () => {
+                            inputElement.value = item.nombre;
+                            suggestionsElement.style.display = 'none';
+                            ejecutarEnrutamientoYEnfoque(item.targetId);
+                        });
+                        suggestionsElement.appendChild(li);
+                    });
+                    suggestionsElement.style.display = 'block';
+                } else {
+                    suggestionsElement.style.display = 'none';
+                }
+            });
+        }
+
+        initAutocomplete('serviceSearchInput', 'search-suggestions-pc');
+
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('headerSearch').contains(e.target)) {
+                document.getElementById('search-suggestions-pc').style.display = 'none';
+            }
+        });
+
+        function ejecutarEnrutamientoYEnfoque(targetId) {
+            navigateTo('servicios');
+            
+            setTimeout(() => {
+                const targetCard = document.getElementById(targetId);
+                if (targetCard) {
+                    targetCard.classList.add('highlighted-service');
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    setTimeout(() => {
+                        targetCard.classList.remove('highlighted-service');
+                    }, 4000);
+                }
+            }, 100);
+        }
+
         function handleServiceSearch(event) {
             event.preventDefault();
             const queryInput = document.getElementById('serviceSearchInput');
@@ -1629,6 +1624,7 @@
             const query = queryInput.value.trim().toLowerCase();
 
             errorMsg.style.display = 'none';
+            document.getElementById('search-suggestions-pc').style.display = 'none';
             document.querySelectorAll('.card').forEach(card => card.classList.remove('highlighted-service'));
 
             const serviceKeywords = {
@@ -1649,19 +1645,12 @@
 
             if (matchedId) {
                 queryInput.value = '';
-                navigateTo('servicios');
-                
-                const targetCard = document.getElementById(matchedId);
-                if (targetCard) {
-                    targetCard.classList.add('highlighted-service');
-                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    setTimeout(() => {
-                        targetCard.classList.remove('highlighted-service');
-                    }, 4000);
-                }
+                ejecutarEnrutamientoYEnfoque(matchedId);
             } else {
                 errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
             }
         }
 
